@@ -1,0 +1,79 @@
+
+#define __SYMBOLS_H__
+
+
+#define BODY 0
+#define FRAMESET 1
+#define FRAME 2
+#define NOFRAME 3
+#define FORM 4 
+#define INPUT 5
+#define SELECT 6 
+#define OPTION 7 
+#define TABLE 8
+#define TD 9
+#define TH 10
+#define THEAD 11
+#define TBODY 12
+#define IMG 13
+#define A 14
+#define LINK 15
+#define UL 16
+#define OL 17
+#define LI 18
+#define B 19
+#define I 20
+#define SMALL 21
+#define SUB 22
+#define SUP 23
+#define CENTER 24
+#define FONT 25
+#define H1 26
+#define H2 27
+#define H3 28
+#define H4 29
+#define H5 30
+#define H6 31
+#define P 32
+#define HR 33
+#define BR 34
+#define HTML 35
+
+#define cHTML 36
+#define cBODY 37
+#define cFRAMESET 38
+#define cFRAME 39
+#define cNOFRAME 40
+#define cFORM 41
+#define cINPUT 42
+#define cSELECT 43
+#define cOPTION 44
+#define cTABLE 45
+#define cTD 46
+#define cTH 47
+#define cTHEAD 48 
+#define cTBODY 49
+#define cIMG 50
+#define cA 51
+#define cLINK 52
+#define cUL 53
+#define cOL 54
+#define cLI 55
+#define cB 56
+#define cI 57
+#define cSMALL 58
+#define cSUB 59
+#define cSUP 60
+#define cCENTER 61
+#define cFONT 62
+#define cH1 63
+#define cH2 64
+#define cH3 65
+#define cH4 66
+#define cH5 67
+#define cH6 68
+#define cP 69
+#define cHR 70
+#define cBR 71
+
+
