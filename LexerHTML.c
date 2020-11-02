@@ -2,12 +2,14 @@
 //
 
 #include <stdio.h>
-#include <symbols.h>
+#include <errno.h>
+#include "html.tab.h"
+#include "symbols.h"
 
 extern FILE* yyin;
 extern int yylex(void);
 const char* lexUnits[] = {
-    " BODY",
+    "BODY",
     "FRAMESET ",
     "FRAME",
     "NOFRAME",
@@ -44,8 +46,10 @@ const char* lexUnits[] = {
     "HR",
     "BR",
     "HTML",
-
-    " CBODY",
+    "TEXT",
+    "HEAD",
+    "cHEAD",
+    "CBODY",
     "cFRAMESET ",
     "cFRAME",
     "cNOFRAME",

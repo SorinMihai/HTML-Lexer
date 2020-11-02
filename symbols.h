@@ -1,8 +1,7 @@
 
 #define __SYMBOLS_H__
 
-
-#define BODY 0
+#define END 0
 #define FRAMESET 1
 #define FRAME 2
 #define NOFRAME 3
@@ -75,5 +74,11 @@
 #define cP 69
 #define cHR 70
 #define cBR 71
+#define BODY 72
+#define TR 73
+#define cTR 74
+#define TEXT 75
+#define HEAD 76
+#define cHEAD 77
 
 

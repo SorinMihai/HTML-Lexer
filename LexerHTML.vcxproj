@@ -139,11 +139,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\lex.yy.c" />
+    <ClCompile Include="lex.yy.c" />
     <ClCompile Include="LexerHTML.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="html.tab.h" />
     <ClInclude Include="symbols.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="html.lex" />
+    <None Include="html.y" />
+    <None Include="input.csrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
