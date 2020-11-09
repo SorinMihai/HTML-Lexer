@@ -6,8 +6,10 @@
 #include "html.tab.h"
 #include "symbols.h"
 
+
+extern int yyparse(void);
 extern FILE* yyin;
-extern int yylex(void);
+extern int yydebug;
 const char* lexUnits[] = {
     "BODY",
     "FRAMESET ",
@@ -89,18 +91,32 @@ const char* lexUnits[] = {
     
 int main()
 {
+    yydebug = 1;
     int tokenValue = 0;
     yyin = fopen("input.csrc", "rt");
     if (yyin != NULL)
     {
-        while ((tokenValue = yylex()) != END)
+        int result = yyparse();
+        switch (result)
         {
-            printf(" -> TOKEN ID: %d; Token Value: %s \n", tokenValue, lexUnits[tokenValue]);
+        case 0:
+            printf("Parse successfull. \n");
+            break;
+        case 1:
+            printf("Invalid input encountered \n");
+            break;
+        case 2:
+            printf("Out of memory \n");
+            break;
+        default:
+            break;
         }
+    
+        fclose(yyin);
     }
     else
     {
-        printf("Fisierul de intrare nu poate fi deschis. Erorare: %d", errno);
+        printf("Fisier inexistent");
     }
 
 }

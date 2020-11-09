@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="html.tab.c" />
     <ClCompile Include="lex.yy.c" />
     <ClCompile Include="LexerHTML.c" />
   </ItemGroup>

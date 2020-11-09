@@ -1,5 +1,7 @@
 %{
 #include <stdio.h>
+int yyerror(char * s);
+extern int yylex(void);
 %}
 %token HTML
 %token BODY
@@ -87,9 +89,7 @@ html_doc
     ;
 
 html_tag
-    : HTML 
-    | html_content
-    | cHTML
+    : HTML html_content cHTML
     ;
 
 html_content
@@ -98,9 +98,8 @@ html_content
     ;
 
 head_tag
-    : HEAD 
-    | head_content
-    | cHEAD 
+    : HEAD head_content cHEAD 
+    | HEAD cHEAD
     ;
 
 head_content
@@ -108,26 +107,20 @@ head_content
     ;
 
 frameset_tag
-    : FRAMESET
-    | frameset_content
-    | cFRAMESET
+    : FRAMESET frameset_content cFRAMESET
     ;
 
 frameset_content
     : FRAME
     | noframe_tag
     ; 
-    
+
 noframe_tag
-    : NOFRAME
-    | body_content
-    | cNOFRAME
+    : NOFRAME body_content cNOFRAME
     ;
 
 a_tag
-    : A 
-    | a_content
-    | cA 
+    : A  a_content cA 
     ;
 
 a_content
@@ -149,9 +142,7 @@ body_tag
     ;
 
 body_tag
-    : BODY
-    | body_content
-    | cBODY
+    : BODY body_content cBODY
     ;
 
 block
@@ -168,14 +159,10 @@ block_content
     ;
 
 center_tag
-    : CENTER
-    | body_content
-    | cCENTER
+    : CENTER body_content cCENTER
 
 form_tag
-    : FORM
-    | form_content
-    | cFORM
+    : FORM form_content cFORM
     ;
 
 form_content
@@ -185,9 +172,8 @@ form_content
     |
 
 select_tag
-    : SELECT
-    | select_content
-    | cSELECT
+    : SELECT select_content cSELECT
+    | SELECT cSELECT
     ;
 
 select_content
@@ -195,32 +181,23 @@ select_content
     ;
 
 option_tag
-    : OPTION
-    | TEXT
-    | cOPTION
+    : OPTION TEXT cOPTION
     ;
 
 ol_tag
-    : OL
-    | li_tag
-    | cOL
+    : OL li_tag cOL
     ;
 
 li_tag 
-    : LI
-    | cLI
+    : LI TEXT cLI
     ;
 
 p_tag
-    : P
-    | text
-    | cP
+    : P TEXT cP
     ;
 
 table_tag
-    : TABLE
-    | table_content
-    | cTABLE
+    : TABLE table_content cTABLE
     ;
 
 table_content
@@ -232,9 +209,8 @@ table_content
     ;
 
 tr_tag
-    : TR
-    | table_cell
-    | cTR
+    : TR table_cell cTR
+    | TR cTR
     ;
 
 table_cell
@@ -243,21 +219,15 @@ table_cell
     ;
 
 td_tag
-    : TD
-    | body_content
-    | cTD
+    : TD body_content cTD
     ;
 
 th_tag
-    : TH
-    | body_content
-    | cTH
+    : TH body_content cTH
     ;
 
 ul_tag
-    : UL
-    | li_tag
-    | cUL
+    : UL li_tag cUL
     ;
 
 text
@@ -311,10 +281,5 @@ body_content
     | text 
     ;
 %%
-void yyerror(const char *s) {
-  cout << "EEW, parse error!  Message: " << s << endl;
-  // exit:
-  exit(-1);
-}
 
     

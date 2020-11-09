@@ -21,6 +21,9 @@
     <ClCompile Include="lex.yy.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="html.tab.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="symbols.h">
