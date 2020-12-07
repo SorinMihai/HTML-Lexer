@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include <errno.h>
 #include "html.tab.h"
-#include "symbols.h"
 
 
 extern int yyparse(void);

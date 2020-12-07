@@ -1,3 +1,4 @@
+
 %{
 #include <stdio.h>
 int yyerror(char * s);
@@ -100,6 +101,7 @@ html_content
 head_tag
     : HEAD head_content cHEAD 
     | HEAD cHEAD
+    |
     ;
 
 head_content
@@ -138,7 +140,7 @@ heading
     ;
 
 body_tag
-    : B TEXT cB
+    : B text cB
     ;
 
 body_tag
@@ -181,7 +183,7 @@ select_content
     ;
 
 option_tag
-    : OPTION TEXT cOPTION
+    : OPTION text cOPTION
     ;
 
 ol_tag
@@ -189,11 +191,11 @@ ol_tag
     ;
 
 li_tag 
-    : LI TEXT cLI
+    : LI text cLI
     ;
 
 p_tag
-    : P TEXT cP
+    : P text cP
     ;
 
 table_tag
@@ -251,27 +253,27 @@ style
     ;
 
 b_tag 
-    : B TEXT cB
+    : B text cB
     ;
 
 font_tag
-    : FONT TEXT cFONT
+    : FONT text cFONT
     ;
 
 i_tag
-    : I TEXT cI
+    : I text cI
     ;
 
 small_tag
-    : SMALL TEXT cSMALL
+    : SMALL text cSMALL
     ;
 
 sub_tag
-    : SUB TEXT cSUB
+    : SUB text cSUB
     ;
 
 sup_tag
-    : SUP TEXT cSUP
+    : SUP text cSUP
     ;
 
 body_content
@@ -282,4 +284,9 @@ body_content
     ;
 %%
 
-    
+int yyerror(char * s) 
+/* yacc error handler */
+{    
+	printf ( "%s\n", s); 
+	return 0;
+}  

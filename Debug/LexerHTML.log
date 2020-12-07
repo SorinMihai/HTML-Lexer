@@ -1,0 +1,7 @@
+﻿  ast.c
+  html.tab.c
+  lex.yy.c
+html.lex(80,13): error C2065: 'text': undeclared identifier
+lex.yy.c(1829,46): warning C4013: 'isatty' undefined; assuming extern returning int
+  LexerHTML.c
+  Generating Code...
