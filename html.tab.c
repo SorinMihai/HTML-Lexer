@@ -67,13 +67,17 @@
 
 
 /* First part of user prologue.  */
-#line 2 "html.y"
+#line 1 "html.y"
 
 #include <stdio.h>
-int yyerror(char * s);
+#include "ast.h"
+
+Node* astRoot = NULL;
+int yyerror(char* s);
 extern int yylex(void);
 
-#line 77 "html.tab.c"
+
+#line 81 "html.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -136,68 +140,78 @@ extern int yydebug;
     UL = 277,                      /* UL  */
     OL = 278,                      /* OL  */
     LI = 279,                      /* LI  */
-    B = 280,                       /* B  */
-    I = 281,                       /* I  */
-    SMALL = 282,                   /* SMALL  */
-    SUB = 283,                     /* SUB  */
-    SUP = 284,                     /* SUP  */
-    CENTER = 285,                  /* CENTER  */
-    FONT = 286,                    /* FONT  */
-    H1 = 287,                      /* H1  */
-    H2 = 288,                      /* H2  */
-    H3 = 289,                      /* H3  */
-    H4 = 290,                      /* H4  */
-    H5 = 291,                      /* H5  */
-    H6 = 292,                      /* H6  */
-    P = 293,                       /* P  */
-    HR = 294,                      /* HR  */
-    BR = 295,                      /* BR  */
-    TEXT = 296,                    /* TEXT  */
-    cBODY = 297,                   /* cBODY  */
-    cHEAD = 298,                   /* cHEAD  */
-    cFRAMESET = 299,               /* cFRAMESET  */
-    cFRAME = 300,                  /* cFRAME  */
-    cNOFRAME = 301,                /* cNOFRAME  */
-    cFORM = 302,                   /* cFORM  */
-    cINPUT = 303,                  /* cINPUT  */
-    cSELECT = 304,                 /* cSELECT  */
-    cOPTION = 305,                 /* cOPTION  */
-    cTABLE = 306,                  /* cTABLE  */
-    cTD = 307,                     /* cTD  */
-    cTH = 308,                     /* cTH  */
-    cTR = 309,                     /* cTR  */
-    cTHEAD = 310,                  /* cTHEAD  */
-    cTBODY = 311,                  /* cTBODY  */
-    cIMG = 312,                    /* cIMG  */
-    cA = 313,                      /* cA  */
-    cLINK = 314,                   /* cLINK  */
-    cUL = 315,                     /* cUL  */
-    cOL = 316,                     /* cOL  */
-    cLI = 317,                     /* cLI  */
-    cB = 318,                      /* cB  */
-    cI = 319,                      /* cI  */
-    cSMALL = 320,                  /* cSMALL  */
-    cSUB = 321,                    /* cSUB  */
-    cSUP = 322,                    /* cSUP  */
-    cCENTER = 323,                 /* cCENTER  */
-    cFONT = 324,                   /* cFONT  */
-    cH1 = 325,                     /* cH1  */
-    cH2 = 326,                     /* cH2  */
-    cH3 = 327,                     /* cH3  */
-    cH4 = 328,                     /* cH4  */
-    cH5 = 329,                     /* cH5  */
-    cH6 = 330,                     /* cH6  */
-    cP = 331,                      /* cP  */
-    cHR = 332,                     /* cHR  */
-    cBR = 333,                     /* cBR  */
-    cHTML = 334                    /* cHTML  */
+    I = 280,                       /* I  */
+    SMALL = 281,                   /* SMALL  */
+    SUB = 282,                     /* SUB  */
+    SUP = 283,                     /* SUP  */
+    CENTER = 284,                  /* CENTER  */
+    FONT = 285,                    /* FONT  */
+    H1 = 286,                      /* H1  */
+    H2 = 287,                      /* H2  */
+    H3 = 288,                      /* H3  */
+    H4 = 289,                      /* H4  */
+    H5 = 290,                      /* H5  */
+    H6 = 291,                      /* H6  */
+    P = 292,                       /* P  */
+    HR = 293,                      /* HR  */
+    BR = 294,                      /* BR  */
+    TEXT = 295,                    /* TEXT  */
+    cBODY = 296,                   /* cBODY  */
+    cHEAD = 297,                   /* cHEAD  */
+    cFRAMESET = 298,               /* cFRAMESET  */
+    cFRAME = 299,                  /* cFRAME  */
+    cNOFRAME = 300,                /* cNOFRAME  */
+    cFORM = 301,                   /* cFORM  */
+    cINPUT = 302,                  /* cINPUT  */
+    cSELECT = 303,                 /* cSELECT  */
+    cOPTION = 304,                 /* cOPTION  */
+    cTABLE = 305,                  /* cTABLE  */
+    cTD = 306,                     /* cTD  */
+    cTH = 307,                     /* cTH  */
+    cTR = 308,                     /* cTR  */
+    cTHEAD = 309,                  /* cTHEAD  */
+    cTBODY = 310,                  /* cTBODY  */
+    cIMG = 311,                    /* cIMG  */
+    cA = 312,                      /* cA  */
+    cLINK = 313,                   /* cLINK  */
+    cUL = 314,                     /* cUL  */
+    cOL = 315,                     /* cOL  */
+    cLI = 316,                     /* cLI  */
+    cB = 317,                      /* cB  */
+    cI = 318,                      /* cI  */
+    cSMALL = 319,                  /* cSMALL  */
+    cSUB = 320,                    /* cSUB  */
+    cSUP = 321,                    /* cSUP  */
+    cCENTER = 322,                 /* cCENTER  */
+    cFONT = 323,                   /* cFONT  */
+    cH1 = 324,                     /* cH1  */
+    cH2 = 325,                     /* cH2  */
+    cH3 = 326,                     /* cH3  */
+    cH4 = 327,                     /* cH4  */
+    cH5 = 328,                     /* cH5  */
+    cH6 = 329,                     /* cH6  */
+    cP = 330,                      /* cP  */
+    cHR = 331,                     /* cHR  */
+    cBR = 332,                     /* cBR  */
+    cHTML = 333                    /* cHTML  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 10 "html.y"
+
+    
+    Node *node;
+    char* strings;
+
+#line 212 "html.tab.c"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -237,102 +251,102 @@ enum yysymbol_kind_t
   YYSYMBOL_UL = 22,                        /* UL  */
   YYSYMBOL_OL = 23,                        /* OL  */
   YYSYMBOL_LI = 24,                        /* LI  */
-  YYSYMBOL_B = 25,                         /* B  */
-  YYSYMBOL_I = 26,                         /* I  */
-  YYSYMBOL_SMALL = 27,                     /* SMALL  */
-  YYSYMBOL_SUB = 28,                       /* SUB  */
-  YYSYMBOL_SUP = 29,                       /* SUP  */
-  YYSYMBOL_CENTER = 30,                    /* CENTER  */
-  YYSYMBOL_FONT = 31,                      /* FONT  */
-  YYSYMBOL_H1 = 32,                        /* H1  */
-  YYSYMBOL_H2 = 33,                        /* H2  */
-  YYSYMBOL_H3 = 34,                        /* H3  */
-  YYSYMBOL_H4 = 35,                        /* H4  */
-  YYSYMBOL_H5 = 36,                        /* H5  */
-  YYSYMBOL_H6 = 37,                        /* H6  */
-  YYSYMBOL_P = 38,                         /* P  */
-  YYSYMBOL_HR = 39,                        /* HR  */
-  YYSYMBOL_BR = 40,                        /* BR  */
-  YYSYMBOL_TEXT = 41,                      /* TEXT  */
-  YYSYMBOL_cBODY = 42,                     /* cBODY  */
-  YYSYMBOL_cHEAD = 43,                     /* cHEAD  */
-  YYSYMBOL_cFRAMESET = 44,                 /* cFRAMESET  */
-  YYSYMBOL_cFRAME = 45,                    /* cFRAME  */
-  YYSYMBOL_cNOFRAME = 46,                  /* cNOFRAME  */
-  YYSYMBOL_cFORM = 47,                     /* cFORM  */
-  YYSYMBOL_cINPUT = 48,                    /* cINPUT  */
-  YYSYMBOL_cSELECT = 49,                   /* cSELECT  */
-  YYSYMBOL_cOPTION = 50,                   /* cOPTION  */
-  YYSYMBOL_cTABLE = 51,                    /* cTABLE  */
-  YYSYMBOL_cTD = 52,                       /* cTD  */
-  YYSYMBOL_cTH = 53,                       /* cTH  */
-  YYSYMBOL_cTR = 54,                       /* cTR  */
-  YYSYMBOL_cTHEAD = 55,                    /* cTHEAD  */
-  YYSYMBOL_cTBODY = 56,                    /* cTBODY  */
-  YYSYMBOL_cIMG = 57,                      /* cIMG  */
-  YYSYMBOL_cA = 58,                        /* cA  */
-  YYSYMBOL_cLINK = 59,                     /* cLINK  */
-  YYSYMBOL_cUL = 60,                       /* cUL  */
-  YYSYMBOL_cOL = 61,                       /* cOL  */
-  YYSYMBOL_cLI = 62,                       /* cLI  */
-  YYSYMBOL_cB = 63,                        /* cB  */
-  YYSYMBOL_cI = 64,                        /* cI  */
-  YYSYMBOL_cSMALL = 65,                    /* cSMALL  */
-  YYSYMBOL_cSUB = 66,                      /* cSUB  */
-  YYSYMBOL_cSUP = 67,                      /* cSUP  */
-  YYSYMBOL_cCENTER = 68,                   /* cCENTER  */
-  YYSYMBOL_cFONT = 69,                     /* cFONT  */
-  YYSYMBOL_cH1 = 70,                       /* cH1  */
-  YYSYMBOL_cH2 = 71,                       /* cH2  */
-  YYSYMBOL_cH3 = 72,                       /* cH3  */
-  YYSYMBOL_cH4 = 73,                       /* cH4  */
-  YYSYMBOL_cH5 = 74,                       /* cH5  */
-  YYSYMBOL_cH6 = 75,                       /* cH6  */
-  YYSYMBOL_cP = 76,                        /* cP  */
-  YYSYMBOL_cHR = 77,                       /* cHR  */
-  YYSYMBOL_cBR = 78,                       /* cBR  */
-  YYSYMBOL_cHTML = 79,                     /* cHTML  */
-  YYSYMBOL_YYACCEPT = 80,                  /* $accept  */
-  YYSYMBOL_html_doc = 81,                  /* html_doc  */
-  YYSYMBOL_html_tag = 82,                  /* html_tag  */
-  YYSYMBOL_html_content = 83,              /* html_content  */
-  YYSYMBOL_head_tag = 84,                  /* head_tag  */
-  YYSYMBOL_head_content = 85,              /* head_content  */
-  YYSYMBOL_frameset_tag = 86,              /* frameset_tag  */
-  YYSYMBOL_frameset_content = 87,          /* frameset_content  */
-  YYSYMBOL_noframe_tag = 88,               /* noframe_tag  */
-  YYSYMBOL_a_tag = 89,                     /* a_tag  */
-  YYSYMBOL_a_content = 90,                 /* a_content  */
-  YYSYMBOL_heading = 91,                   /* heading  */
-  YYSYMBOL_body_tag = 92,                  /* body_tag  */
-  YYSYMBOL_block = 93,                     /* block  */
-  YYSYMBOL_block_content = 94,             /* block_content  */
-  YYSYMBOL_center_tag = 95,                /* center_tag  */
-  YYSYMBOL_form_tag = 96,                  /* form_tag  */
-  YYSYMBOL_form_content = 97,              /* form_content  */
-  YYSYMBOL_select_tag = 98,                /* select_tag  */
-  YYSYMBOL_select_content = 99,            /* select_content  */
-  YYSYMBOL_option_tag = 100,               /* option_tag  */
-  YYSYMBOL_ol_tag = 101,                   /* ol_tag  */
-  YYSYMBOL_li_tag = 102,                   /* li_tag  */
-  YYSYMBOL_p_tag = 103,                    /* p_tag  */
-  YYSYMBOL_table_tag = 104,                /* table_tag  */
-  YYSYMBOL_table_content = 105,            /* table_content  */
-  YYSYMBOL_tr_tag = 106,                   /* tr_tag  */
-  YYSYMBOL_table_cell = 107,               /* table_cell  */
-  YYSYMBOL_td_tag = 108,                   /* td_tag  */
-  YYSYMBOL_th_tag = 109,                   /* th_tag  */
-  YYSYMBOL_ul_tag = 110,                   /* ul_tag  */
-  YYSYMBOL_text = 111,                     /* text  */
-  YYSYMBOL_text_content = 112,             /* text_content  */
-  YYSYMBOL_style = 113,                    /* style  */
-  YYSYMBOL_b_tag = 114,                    /* b_tag  */
-  YYSYMBOL_font_tag = 115,                 /* font_tag  */
-  YYSYMBOL_i_tag = 116,                    /* i_tag  */
-  YYSYMBOL_small_tag = 117,                /* small_tag  */
-  YYSYMBOL_sub_tag = 118,                  /* sub_tag  */
-  YYSYMBOL_sup_tag = 119,                  /* sup_tag  */
-  YYSYMBOL_body_content = 120              /* body_content  */
+  YYSYMBOL_I = 25,                         /* I  */
+  YYSYMBOL_SMALL = 26,                     /* SMALL  */
+  YYSYMBOL_SUB = 27,                       /* SUB  */
+  YYSYMBOL_SUP = 28,                       /* SUP  */
+  YYSYMBOL_CENTER = 29,                    /* CENTER  */
+  YYSYMBOL_FONT = 30,                      /* FONT  */
+  YYSYMBOL_H1 = 31,                        /* H1  */
+  YYSYMBOL_H2 = 32,                        /* H2  */
+  YYSYMBOL_H3 = 33,                        /* H3  */
+  YYSYMBOL_H4 = 34,                        /* H4  */
+  YYSYMBOL_H5 = 35,                        /* H5  */
+  YYSYMBOL_H6 = 36,                        /* H6  */
+  YYSYMBOL_P = 37,                         /* P  */
+  YYSYMBOL_HR = 38,                        /* HR  */
+  YYSYMBOL_BR = 39,                        /* BR  */
+  YYSYMBOL_TEXT = 40,                      /* TEXT  */
+  YYSYMBOL_cBODY = 41,                     /* cBODY  */
+  YYSYMBOL_cHEAD = 42,                     /* cHEAD  */
+  YYSYMBOL_cFRAMESET = 43,                 /* cFRAMESET  */
+  YYSYMBOL_cFRAME = 44,                    /* cFRAME  */
+  YYSYMBOL_cNOFRAME = 45,                  /* cNOFRAME  */
+  YYSYMBOL_cFORM = 46,                     /* cFORM  */
+  YYSYMBOL_cINPUT = 47,                    /* cINPUT  */
+  YYSYMBOL_cSELECT = 48,                   /* cSELECT  */
+  YYSYMBOL_cOPTION = 49,                   /* cOPTION  */
+  YYSYMBOL_cTABLE = 50,                    /* cTABLE  */
+  YYSYMBOL_cTD = 51,                       /* cTD  */
+  YYSYMBOL_cTH = 52,                       /* cTH  */
+  YYSYMBOL_cTR = 53,                       /* cTR  */
+  YYSYMBOL_cTHEAD = 54,                    /* cTHEAD  */
+  YYSYMBOL_cTBODY = 55,                    /* cTBODY  */
+  YYSYMBOL_cIMG = 56,                      /* cIMG  */
+  YYSYMBOL_cA = 57,                        /* cA  */
+  YYSYMBOL_cLINK = 58,                     /* cLINK  */
+  YYSYMBOL_cUL = 59,                       /* cUL  */
+  YYSYMBOL_cOL = 60,                       /* cOL  */
+  YYSYMBOL_cLI = 61,                       /* cLI  */
+  YYSYMBOL_cB = 62,                        /* cB  */
+  YYSYMBOL_cI = 63,                        /* cI  */
+  YYSYMBOL_cSMALL = 64,                    /* cSMALL  */
+  YYSYMBOL_cSUB = 65,                      /* cSUB  */
+  YYSYMBOL_cSUP = 66,                      /* cSUP  */
+  YYSYMBOL_cCENTER = 67,                   /* cCENTER  */
+  YYSYMBOL_cFONT = 68,                     /* cFONT  */
+  YYSYMBOL_cH1 = 69,                       /* cH1  */
+  YYSYMBOL_cH2 = 70,                       /* cH2  */
+  YYSYMBOL_cH3 = 71,                       /* cH3  */
+  YYSYMBOL_cH4 = 72,                       /* cH4  */
+  YYSYMBOL_cH5 = 73,                       /* cH5  */
+  YYSYMBOL_cH6 = 74,                       /* cH6  */
+  YYSYMBOL_cP = 75,                        /* cP  */
+  YYSYMBOL_cHR = 76,                       /* cHR  */
+  YYSYMBOL_cBR = 77,                       /* cBR  */
+  YYSYMBOL_cHTML = 78,                     /* cHTML  */
+  YYSYMBOL_YYACCEPT = 79,                  /* $accept  */
+  YYSYMBOL_html_doc = 80,                  /* html_doc  */
+  YYSYMBOL_html_tag = 81,                  /* html_tag  */
+  YYSYMBOL_html_content = 82,              /* html_content  */
+  YYSYMBOL_head_tag = 83,                  /* head_tag  */
+  YYSYMBOL_head_content = 84,              /* head_content  */
+  YYSYMBOL_frameset_tag = 85,              /* frameset_tag  */
+  YYSYMBOL_frameset_content = 86,          /* frameset_content  */
+  YYSYMBOL_noframe_tag = 87,               /* noframe_tag  */
+  YYSYMBOL_a_tag = 88,                     /* a_tag  */
+  YYSYMBOL_a_content = 89,                 /* a_content  */
+  YYSYMBOL_heading = 90,                   /* heading  */
+  YYSYMBOL_body_tag = 91,                  /* body_tag  */
+  YYSYMBOL_body_content_list = 92,         /* body_content_list  */
+  YYSYMBOL_body_content = 93,              /* body_content  */
+  YYSYMBOL_block = 94,                     /* block  */
+  YYSYMBOL_block_content_list = 95,        /* block_content_list  */
+  YYSYMBOL_block_content = 96,             /* block_content  */
+  YYSYMBOL_center_tag = 97,                /* center_tag  */
+  YYSYMBOL_form_tag = 98,                  /* form_tag  */
+  YYSYMBOL_form_content = 99,              /* form_content  */
+  YYSYMBOL_select_tag = 100,               /* select_tag  */
+  YYSYMBOL_select_content = 101,           /* select_content  */
+  YYSYMBOL_option_tag = 102,               /* option_tag  */
+  YYSYMBOL_ol_tag = 103,                   /* ol_tag  */
+  YYSYMBOL_li_tag = 104,                   /* li_tag  */
+  YYSYMBOL_p_tag = 105,                    /* p_tag  */
+  YYSYMBOL_table_tag = 106,                /* table_tag  */
+  YYSYMBOL_table_content = 107,            /* table_content  */
+  YYSYMBOL_tr_tag = 108,                   /* tr_tag  */
+  YYSYMBOL_table_cell = 109,               /* table_cell  */
+  YYSYMBOL_td_tag = 110,                   /* td_tag  */
+  YYSYMBOL_th_tag = 111,                   /* th_tag  */
+  YYSYMBOL_ul_tag = 112,                   /* ul_tag  */
+  YYSYMBOL_text = 113,                     /* text  */
+  YYSYMBOL_text_content = 114,             /* text_content  */
+  YYSYMBOL_style = 115,                    /* style  */
+  YYSYMBOL_font_tag = 116,                 /* font_tag  */
+  YYSYMBOL_i_tag = 117,                    /* i_tag  */
+  YYSYMBOL_small_tag = 118,                /* small_tag  */
+  YYSYMBOL_sub_tag = 119,                  /* sub_tag  */
+  YYSYMBOL_sup_tag = 120                   /* sup_tag  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -640,21 +654,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  7
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   138
+#define YYLAST   279
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  80
+#define YYNTOKENS  79
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  41
+#define YYNNTS  42
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  78
+#define YYNRULES  90
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  129
+#define YYNSTATES  131
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   334
+#define YYMAXUTOK   333
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -701,21 +715,23 @@ static const yytype_int8 yytranslate[] =
       45,    46,    47,    48,    49,    50,    51,    52,    53,    54,
       55,    56,    57,    58,    59,    60,    61,    62,    63,    64,
       65,    66,    67,    68,    69,    70,    71,    72,    73,    74,
-      75,    76,    77,    78,    79
+      75,    76,    77,    78
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,    89,    89,    93,    97,    98,   102,   103,   104,   108,
-     112,   116,   117,   121,   125,   129,   130,   134,   135,   136,
-     137,   138,   139,   143,   147,   151,   155,   156,   157,   158,
-     159,   160,   164,   167,   171,   172,   173,   174,   177,   178,
-     182,   186,   190,   194,   198,   202,   206,   207,   208,   209,
-     210,   214,   215,   219,   220,   224,   228,   232,   236,   240,
-     241,   242,   243,   247,   248,   249,   250,   251,   252,   256,
-     260,   264,   268,   272,   276,   280,   281,   282,   283
+       0,   152,   152,   156,   160,   161,   162,   163,   167,   168,
+     169,   173,   177,   178,   187,   188,   192,   193,   197,   198,
+     201,   202,   206,   207,   208,   209,   210,   211,   239,   240,
+     243,   244,   248,   249,   250,   251,   255,   256,   260,   261,
+     265,   266,   267,   268,   269,   270,   274,   277,   281,   282,
+     283,   284,   287,   288,   292,   296,   300,   304,   308,   312,
+     316,   317,   318,   319,   320,   324,   325,   329,   330,   334,
+     338,   342,   346,   350,   351,   352,   353,   357,   358,   359,
+     360,   361,   365,   369,   373,   377,   381,   385,   386,   387,
+     388
 };
 #endif
 
@@ -734,20 +750,21 @@ static const char *const yytname[] =
   "\"end of file\"", "error", "\"invalid token\"", "HTML", "BODY", "HEAD",
   "FRAMESET", "FRAME", "NOFRAME", "FORM", "INPUT", "SELECT", "OPTION",
   "TABLE", "TD", "TH", "TR", "THEAD", "TBODY", "IMG", "A", "LINK", "UL",
-  "OL", "LI", "B", "I", "SMALL", "SUB", "SUP", "CENTER", "FONT", "H1",
-  "H2", "H3", "H4", "H5", "H6", "P", "HR", "BR", "TEXT", "cBODY", "cHEAD",
+  "OL", "LI", "I", "SMALL", "SUB", "SUP", "CENTER", "FONT", "H1", "H2",
+  "H3", "H4", "H5", "H6", "P", "HR", "BR", "TEXT", "cBODY", "cHEAD",
   "cFRAMESET", "cFRAME", "cNOFRAME", "cFORM", "cINPUT", "cSELECT",
   "cOPTION", "cTABLE", "cTD", "cTH", "cTR", "cTHEAD", "cTBODY", "cIMG",
   "cA", "cLINK", "cUL", "cOL", "cLI", "cB", "cI", "cSMALL", "cSUB", "cSUP",
   "cCENTER", "cFONT", "cH1", "cH2", "cH3", "cH4", "cH5", "cH6", "cP",
   "cHR", "cBR", "cHTML", "$accept", "html_doc", "html_tag", "html_content",
   "head_tag", "head_content", "frameset_tag", "frameset_content",
-  "noframe_tag", "a_tag", "a_content", "heading", "body_tag", "block",
+  "noframe_tag", "a_tag", "a_content", "heading", "body_tag",
+  "body_content_list", "body_content", "block", "block_content_list",
   "block_content", "center_tag", "form_tag", "form_content", "select_tag",
   "select_content", "option_tag", "ol_tag", "li_tag", "p_tag", "table_tag",
   "table_content", "tr_tag", "table_cell", "td_tag", "th_tag", "ul_tag",
-  "text", "text_content", "style", "b_tag", "font_tag", "i_tag",
-  "small_tag", "sub_tag", "sup_tag", "body_content", YY_NULLPTR
+  "text", "text_content", "style", "font_tag", "i_tag", "small_tag",
+  "sub_tag", "sup_tag", YY_NULLPTR
 };
 
 static const char *
@@ -769,11 +786,11 @@ static const yytype_int16 yytoknum[] =
      295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
      305,   306,   307,   308,   309,   310,   311,   312,   313,   314,
      315,   316,   317,   318,   319,   320,   321,   322,   323,   324,
-     325,   326,   327,   328,   329,   330,   331,   332,   333,   334
+     325,   326,   327,   328,   329,   330,   331,   332,   333
 };
 #endif
 
-#define YYPACT_NINF (-56)
+#define YYPACT_NINF (-57)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -785,21 +802,22 @@ static const yytype_int16 yytoknum[] =
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-static const yytype_int8 yypact[] =
+static const yytype_int16 yypact[] =
 {
-       1,     7,    21,   -56,   -12,   -55,    14,   -56,   -56,   -56,
-     -16,   -56,    98,    15,     9,   -56,   -56,   -56,    66,   -10,
-     -56,    28,     6,     6,     9,     9,     9,     9,     9,    98,
-       9,   -56,   -56,   -56,   -56,   -56,   -56,     9,   -56,   -56,
-     -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -17,
-     -56,    98,     0,   -56,   -31,   -56,    -7,   -14,   -56,   -56,
-     -13,   -56,   -56,   -56,   -56,    -1,   -56,    -6,   -56,   -56,
-       9,    -9,    -3,     3,     8,     2,     4,    11,     5,    12,
-      -5,   -56,    34,   -56,   -56,     9,   -56,    25,   -56,   -56,
-      98,    98,   -56,    33,   -56,   -56,   -56,   -56,    46,   -56,
-     -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-      40,   -56,    57,    59,   -56,   -56,   -56,   -56,   -56
+       5,    40,    17,   -57,   116,   -19,   -56,    37,   -57,   -57,
+     180,    -5,   -57,     1,     6,     6,   233,   233,   233,   233,
+     211,   233,   -57,   -57,   -57,   -57,   -57,   -57,   233,   -57,
+     -57,   -57,   -57,   -57,   147,   -57,   -57,   242,   -57,   -57,
+     -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,
+     -57,   -57,   -57,   -57,   -57,   -17,   -57,    11,   -57,   -57,
+     -57,    -9,   -57,    -8,   -57,     0,   -57,   -57,   -57,   -57,
+      -4,   -57,   -57,   -15,   -57,   -57,   233,   -11,   -13,    -6,
+      -3,   -14,    -7,    18,    -1,   -20,   -57,   -57,   -57,   -57,
+     -57,    43,   -57,    41,   -57,   233,   -57,    12,   -57,   -57,
+     211,   211,   -57,    33,   -57,   -57,   -57,   -57,    26,   -57,
+     -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,    85,
+     -57,    44,   -57,    38,    45,   -57,   -57,   -57,   -57,   -57,
+     -57
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -807,39 +825,40 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     8,     0,     2,     0,     0,     0,     1,     9,     7,
-       0,     3,     0,     0,     0,     5,     4,     6,    37,     0,
-      60,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    17,    18,    19,    20,    21,    22,     0,    75,    59,
-      61,    76,    77,    25,    26,    27,    28,    31,    30,    29,
-      78,    58,    62,    63,    64,    65,    66,    67,    68,     0,
-      11,     0,     0,    12,     0,    34,     0,     0,    36,    35,
-       0,    46,    48,    47,    50,     0,    49,     0,    15,    16,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    24,     0,    10,    23,     0,    39,     0,    40,    33,
-       0,     0,    52,     0,    53,    54,    45,    14,     0,    57,
-      42,    69,    71,    72,    73,    74,    32,    70,    44,    13,
-       0,    38,     0,     0,    51,    43,    41,    55,    56
+       0,    10,     0,     2,     0,     0,     0,     6,     5,     1,
+      37,     0,    74,     0,     0,     0,     0,     0,     0,     0,
+      37,     0,    22,    23,    24,    25,    26,    27,     0,    32,
+      73,    29,    75,    34,     0,    30,    33,    36,    38,    40,
+      41,    42,    43,    44,    45,    35,    72,    76,    77,    78,
+      79,    80,    81,    11,     9,     0,     3,     0,     7,     4,
+      48,     0,    49,     0,    50,     0,    60,    62,    61,    64,
+       0,    63,    19,     0,    20,    21,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    28,    31,    39,     8,
+      14,     0,    13,     0,    15,     0,    53,     0,    54,    47,
+      37,    37,    66,     0,    67,    68,    59,    18,     0,    71,
+      56,    83,    84,    85,    86,    46,    82,    58,    17,     0,
+      12,     0,    52,     0,     0,    65,    57,    16,    55,    69,
+      70
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -56,    89,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -56,   -56,    90,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -56,   -11,   -56,   -56,   -56,   -56,   -56,   -56,   -56,   -56,
-     -18
+     -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,   -57,
+     -57,    79,    88,     8,   -10,   -57,   -57,    59,   -57,   -57,
+     -57,   -57,   -57,   -57,   -57,    86,   -57,   -57,   -57,   -57,
+     -57,   -57,   -57,   -57,   -12,   -57,   -57,   -57,   -57,   -57,
+     -57,   -57
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,     5,     6,    10,    15,    62,    63,    40,
-      77,    41,    16,    42,    43,    44,    45,    67,    68,    97,
-      98,    46,    81,    47,    48,    75,    76,   103,   104,   105,
-      49,    50,    51,    52,    53,    54,    55,    56,    57,    58,
-      59
+      -1,     2,     3,     6,     7,    55,    58,    93,    94,    32,
+      73,    33,     8,    34,    35,    36,    37,    38,    39,    40,
+      63,    64,    97,    98,    41,    77,    42,    43,    70,    71,
+     103,   104,   105,    44,    45,    46,    47,    48,    49,    50,
+      51,    52
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -847,83 +866,116 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      69,   100,   101,    64,     1,    95,    70,    71,    72,     8,
-      79,    88,     4,    83,    84,    85,    86,    87,    12,    89,
-      13,     7,    60,    61,    11,    91,    90,    17,    20,    21,
-      80,     9,    94,    99,    24,    25,    26,    27,    28,    14,
-      30,   102,    96,    92,    93,    73,    74,    20,    21,    39,
-     106,   109,   107,    24,    25,    26,    27,    28,   110,    30,
-      31,    32,    33,    34,    35,    36,   111,   113,    39,   108,
-     114,   118,   112,   116,   121,    18,    65,    66,   115,    19,
-     119,   117,   122,   123,   120,    20,    21,   124,    22,    23,
-     126,    24,    25,    26,    27,    28,    29,    30,    31,    32,
-      33,    34,    35,    36,    37,    38,    39,    18,   125,   127,
-      78,    19,   128,    82,     0,     0,     0,    20,    21,     0,
-      22,    23,     0,    24,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39
+      62,    75,    53,    95,    79,    80,    81,    82,     1,    84,
+      83,    65,    66,    67,   100,   101,    85,     9,    90,    91,
+      12,    13,    56,    54,    87,    89,    16,    17,    18,    19,
+      76,    21,    22,    23,    24,    25,    26,    27,    99,    96,
+      30,     4,   107,    57,     4,     5,   106,   110,   109,    68,
+      69,   113,    10,   102,    92,   117,    11,   111,    72,   114,
+     122,   112,    12,    13,   108,    14,    15,   116,    16,    17,
+      18,    19,    20,    21,    22,    23,    24,    25,    26,    27,
+      28,    29,    30,   121,   120,   115,   125,   126,   118,   129,
+     123,   124,    74,   128,    10,    59,    88,   130,    11,   119,
+       0,    78,     0,     0,    12,    13,     0,    14,    15,    87,
+      16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
+      26,    27,    28,    29,    30,    10,     0,     0,     0,    11,
+     127,     0,     0,     0,     0,    12,    13,     0,    14,    15,
+       0,    16,    17,    18,    19,    20,    21,    22,    23,    24,
+      25,    26,    27,    28,    29,    30,    10,    31,     0,     0,
+      11,     0,     0,     0,     0,     0,    12,    13,     0,    14,
+      15,     0,    16,    17,    18,    19,    20,    21,    22,    23,
+      24,    25,    26,    27,    28,    29,    30,     0,    86,    10,
+      60,    61,     0,    11,     0,     0,     0,     0,     0,    12,
+      13,     0,    14,    15,     0,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      10,     0,     0,     0,    11,     0,     0,     0,     0,     0,
+      12,    13,     0,    14,    15,     0,    16,    17,    18,    19,
+      20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
+      30,    10,    12,    13,     0,    11,     0,     0,    16,    17,
+      18,    19,     0,    21,    14,    15,     0,     0,     0,     0,
+       0,    20,    30,     0,     0,     0,     0,     0,     0,    28
 };
 
 static const yytype_int8 yycheck[] =
 {
-      18,    14,    15,    14,     3,    12,    16,    17,    18,    21,
-      21,    29,     5,    24,    25,    26,    27,    28,     4,    30,
-       6,     0,     7,     8,    79,    42,    37,    43,    19,    20,
-      24,    43,    63,    47,    25,    26,    27,    28,    29,    25,
-      31,    54,    49,    61,    44,    55,    56,    19,    20,    40,
-      51,    60,    58,    25,    26,    27,    28,    29,    61,    31,
-      32,    33,    34,    35,    36,    37,    63,    65,    40,    80,
-      66,    76,    64,    68,    49,     9,    10,    11,    67,    13,
-      46,    69,   100,   101,    95,    19,    20,    54,    22,    23,
-      50,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      34,    35,    36,    37,    38,    39,    40,     9,    62,    52,
-      21,    13,    53,    23,    -1,    -1,    -1,    19,    20,    -1,
-      22,    23,    -1,    25,    26,    27,    28,    29,    30,    31,
-      32,    33,    34,    35,    36,    37,    38,    39,    40
+      10,    13,    21,    12,    16,    17,    18,    19,     3,    21,
+      20,    16,    17,    18,    14,    15,    28,     0,     7,     8,
+      19,    20,    78,    42,    34,    42,    25,    26,    27,    28,
+      24,    30,    31,    32,    33,    34,    35,    36,    46,    48,
+      39,     4,    57,     6,     4,     5,    50,    60,    59,    54,
+      55,    65,     9,    53,    43,    75,    13,    63,    57,    66,
+      48,    64,    19,    20,    76,    22,    23,    68,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    38,    39,    95,    43,    67,    53,    61,    45,    51,
+     100,   101,    13,    49,     9,     7,    37,    52,    13,    91,
+      -1,    15,    -1,    -1,    19,    20,    -1,    22,    23,   119,
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37,    38,    39,     9,    -1,    -1,    -1,    13,
+      45,    -1,    -1,    -1,    -1,    19,    20,    -1,    22,    23,
+      -1,    25,    26,    27,    28,    29,    30,    31,    32,    33,
+      34,    35,    36,    37,    38,    39,     9,    41,    -1,    -1,
+      13,    -1,    -1,    -1,    -1,    -1,    19,    20,    -1,    22,
+      23,    -1,    25,    26,    27,    28,    29,    30,    31,    32,
+      33,    34,    35,    36,    37,    38,    39,    -1,    41,     9,
+      10,    11,    -1,    13,    -1,    -1,    -1,    -1,    -1,    19,
+      20,    -1,    22,    23,    -1,    25,    26,    27,    28,    29,
+      30,    31,    32,    33,    34,    35,    36,    37,    38,    39,
+       9,    -1,    -1,    -1,    13,    -1,    -1,    -1,    -1,    -1,
+      19,    20,    -1,    22,    23,    -1,    25,    26,    27,    28,
+      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,     9,    19,    20,    -1,    13,    -1,    -1,    25,    26,
+      27,    28,    -1,    30,    22,    23,    -1,    -1,    -1,    -1,
+      -1,    29,    39,    -1,    -1,    -1,    -1,    -1,    -1,    37
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    81,    82,     5,    83,    84,     0,    21,    43,
-      85,    79,     4,     6,    25,    86,    92,    43,     9,    13,
-      19,    20,    22,    23,    25,    26,    27,    28,    29,    30,
-      31,    32,    33,    34,    35,    36,    37,    38,    39,    40,
-      89,    91,    93,    94,    95,    96,   101,   103,   104,   110,
-     111,   112,   113,   114,   115,   116,   117,   118,   119,   120,
-       7,     8,    87,    88,   111,    10,    11,    97,    98,   120,
-      16,    17,    18,    55,    56,   105,   106,    90,    91,   111,
-      24,   102,   102,   111,   111,   111,   111,   111,   120,   111,
-     111,    42,   120,    44,    63,    12,    49,    99,   100,    47,
-      14,    15,    54,   107,   108,   109,    51,    58,   111,    60,
-      61,    63,    64,    65,    66,    67,    68,    69,    76,    46,
-     111,    49,   120,   120,    54,    62,    50,    52,    53
+       0,     3,    80,    81,     4,     5,    82,    83,    91,     0,
+       9,    13,    19,    20,    22,    23,    25,    26,    27,    28,
+      29,    30,    31,    32,    33,    34,    35,    36,    37,    38,
+      39,    41,    88,    90,    92,    93,    94,    95,    96,    97,
+      98,   103,   105,   106,   112,   113,   114,   115,   116,   117,
+     118,   119,   120,    21,    42,    84,    78,     6,    85,    91,
+      10,    11,    93,    99,   100,    16,    17,    18,    54,    55,
+     107,   108,    57,    89,    90,   113,    24,   104,   104,   113,
+     113,   113,   113,    93,   113,   113,    41,    93,    96,    42,
+       7,     8,    43,    86,    87,    12,    48,   101,   102,    46,
+      14,    15,    53,   109,   110,   111,    50,    57,   113,    59,
+      60,    63,    64,    65,    66,    67,    68,    75,    45,    92,
+      43,   113,    48,    93,    93,    53,    61,    45,    49,    51,
+      52
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    80,    81,    82,    83,    83,    84,    84,    84,    85,
-      86,    87,    87,    88,    89,    90,    90,    91,    91,    91,
-      91,    91,    91,    92,    92,    93,    94,    94,    94,    94,
-      94,    94,    95,    96,    97,    97,    97,    97,    98,    98,
-      99,   100,   101,   102,   103,   104,   105,   105,   105,   105,
-     105,   106,   106,   107,   107,   108,   109,   110,   111,   112,
-     112,   112,   112,   113,   113,   113,   113,   113,   113,   114,
-     115,   116,   117,   118,   119,   120,   120,   120,   120
+       0,    79,    80,    81,    82,    82,    82,    82,    83,    83,
+      83,    84,    85,    85,    86,    86,    87,    87,    88,    88,
+      89,    89,    90,    90,    90,    90,    90,    90,    91,    91,
+      92,    92,    93,    93,    93,    93,    94,    94,    95,    95,
+      96,    96,    96,    96,    96,    96,    97,    98,    99,    99,
+      99,    99,   100,   100,   101,   102,   103,   104,   105,   106,
+     107,   107,   107,   107,   107,   108,   108,   109,   109,   110,
+     111,   112,   113,   114,   114,   114,   114,   115,   115,   115,
+     115,   115,   116,   117,   118,   119,   120,    93,    93,    93,
+      93
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     1,     3,     2,     2,     3,     2,     0,     1,
-       3,     1,     1,     3,     3,     1,     1,     1,     1,     1,
-       1,     1,     1,     3,     3,     1,     1,     1,     1,     1,
-       1,     1,     3,     3,     1,     1,     1,     0,     3,     2,
-       1,     3,     3,     3,     3,     3,     1,     1,     1,     1,
-       1,     3,     2,     1,     1,     3,     3,     3,     1,     1,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     3,
-       3,     3,     3,     3,     3,     1,     1,     1,     1
+       0,     2,     1,     3,     2,     1,     1,     2,     3,     2,
+       0,     1,     3,     2,     1,     1,     3,     2,     3,     2,
+       1,     1,     1,     1,     1,     1,     1,     1,     3,     2,
+       1,     2,     1,     1,     1,     1,     1,     0,     1,     2,
+       1,     1,     1,     1,     1,     1,     3,     3,     1,     1,
+       1,     0,     3,     2,     1,     3,     3,     3,     3,     3,
+       1,     1,     1,     1,     1,     3,     2,     1,     1,     3,
+       3,     3,     1,     1,     1,     1,     1,     1,     1,     1,
+       1,     1,     3,     3,     3,     3,     3,     1,     1,     1,
+       1
 };
 
 
@@ -1390,8 +1442,266 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
+  case 2: /* html_doc: html_tag  */
+#line 152 "html.y"
+                                                                        { (yyval.node) = createHtmlDocumentNode((yyvsp[0].node)); astRoot = (yyval.node);}
+#line 1449 "html.tab.c"
+    break;
 
-#line 1395 "html.tab.c"
+  case 3: /* html_tag: HTML html_content cHTML  */
+#line 156 "html.y"
+                                                                        { (yyval.node) = createHtmlTagNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1455 "html.tab.c"
+    break;
+
+  case 4: /* html_content: head_tag body_tag  */
+#line 160 "html.y"
+                                                                        { (yyval.node) = createHtmlContentNode((yyvsp[-1].node), (yyvsp[0].node), NULL); }
+#line 1461 "html.tab.c"
+    break;
+
+  case 5: /* html_content: body_tag  */
+#line 161 "html.y"
+                                                                        { (yyval.node) = createHtmlContentNode(NULL, (yyvsp[0].node), NULL); }
+#line 1467 "html.tab.c"
+    break;
+
+  case 6: /* html_content: head_tag  */
+#line 162 "html.y"
+                                                                        { (yyval.node) = createHtmlContentNode((yyvsp[0].node), NULL, NULL); }
+#line 1473 "html.tab.c"
+    break;
+
+  case 7: /* html_content: head_tag frameset_tag  */
+#line 163 "html.y"
+                                                                        { (yyval.node) = createHtmlContentNode((yyvsp[-1].node), NULL, (yyvsp[0].node)); }
+#line 1479 "html.tab.c"
+    break;
+
+  case 8: /* head_tag: HEAD head_content cHEAD  */
+#line 167 "html.y"
+                                                                        { (yyval.node) = createHeadTagNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1485 "html.tab.c"
+    break;
+
+  case 9: /* head_tag: HEAD cHEAD  */
+#line 168 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("HEAD", "cHEAD"); }
+#line 1491 "html.tab.c"
+    break;
+
+  case 11: /* head_content: LINK  */
+#line 173 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("LINK", NULL); }
+#line 1497 "html.tab.c"
+    break;
+
+  case 12: /* frameset_tag: FRAMESET frameset_content cFRAMESET  */
+#line 177 "html.y"
+                                                                        { (yyval.node) = createTagNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1503 "html.tab.c"
+    break;
+
+  case 13: /* frameset_tag: FRAMESET cFRAMESET  */
+#line 178 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("FRAMESET", "cFRAMESET")}
+#line 1509 "html.tab.c"
+    break;
+
+  case 14: /* frameset_content: FRAME  */
+#line 187 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("FRAME", NULL); }
+#line 1515 "html.tab.c"
+    break;
+
+  case 15: /* frameset_content: noframe_tag  */
+#line 188 "html.y"
+                                                                        { (yyval.node) = createNoframeTagNode((yyvsp[0].node)); }
+#line 1521 "html.tab.c"
+    break;
+
+  case 16: /* noframe_tag: NOFRAME body_content_list cNOFRAME  */
+#line 192 "html.y"
+                                                                        { (yyval.node) = createBodyContentListNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1527 "html.tab.c"
+    break;
+
+  case 17: /* noframe_tag: NOFRAME cNOFRAME  */
+#line 193 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("NOFRAME", "cNOFRAME"); }
+#line 1533 "html.tab.c"
+    break;
+
+  case 18: /* a_tag: A a_content cA  */
+#line 197 "html.y"
+                                                                        { (yyval.node) = createATagNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1539 "html.tab.c"
+    break;
+
+  case 19: /* a_tag: A cA  */
+#line 198 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("A", "cA"); }
+#line 1545 "html.tab.c"
+    break;
+
+  case 20: /* a_content: heading  */
+#line 201 "html.y"
+                                                                        { (yyval.node) = createHeadingNode((yyvsp[0].node)); }
+#line 1551 "html.tab.c"
+    break;
+
+  case 21: /* a_content: text  */
+#line 202 "html.y"
+                                                                        { (yyval.node) = createTextNode((yyvsp[0].node), NULL, NULL); }
+#line 1557 "html.tab.c"
+    break;
+
+  case 22: /* heading: H1  */
+#line 206 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1563 "html.tab.c"
+    break;
+
+  case 23: /* heading: H2  */
+#line 207 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1569 "html.tab.c"
+    break;
+
+  case 24: /* heading: H3  */
+#line 208 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1575 "html.tab.c"
+    break;
+
+  case 25: /* heading: H4  */
+#line 209 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1581 "html.tab.c"
+    break;
+
+  case 26: /* heading: H5  */
+#line 210 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1587 "html.tab.c"
+    break;
+
+  case 27: /* heading: H6  */
+#line 211 "html.y"
+                                                                        { (yyval.node) = createHxTagNode((yyvsp[0].strings), NULL, NULL); }
+#line 1593 "html.tab.c"
+    break;
+
+  case 28: /* body_tag: BODY body_content_list cBODY  */
+#line 239 "html.y"
+                                                                        { (yyval.node) = createBodyContentListNode((yyvsp[-1].node), (yyvsp[-2].strings), (yyvsp[0].strings)); }
+#line 1599 "html.tab.c"
+    break;
+
+  case 29: /* body_tag: BODY cBODY  */
+#line 240 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier( "BODY", cBODY); }
+#line 1605 "html.tab.c"
+    break;
+
+  case 30: /* body_content_list: body_content  */
+#line 243 "html.y"
+                                                                        { (yyval.node) = createBodyContentNode((yyvsp[0].node)); }
+#line 1611 "html.tab.c"
+    break;
+
+  case 31: /* body_content_list: body_content_list body_content  */
+#line 244 "html.y"
+                                                                        { (yyval.node) = (yyvsp[-1].node); addLinkToList((yyval.node), (yyvsp[0].node)); }
+#line 1617 "html.tab.c"
+    break;
+
+  case 32: /* body_content: HR  */
+#line 248 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier("HR", NULL); }
+#line 1623 "html.tab.c"
+    break;
+
+  case 33: /* body_content: block  */
+#line 249 "html.y"
+                                                                        { (yyval.node) = createBlockNode((yyvsp[0].node)); }
+#line 1629 "html.tab.c"
+    break;
+
+  case 34: /* body_content: heading  */
+#line 250 "html.y"
+                                                                        { (yyval.node) = createHeadingNode((yyvsp[0].node)); }
+#line 1635 "html.tab.c"
+    break;
+
+  case 35: /* body_content: text  */
+#line 251 "html.y"
+                                                                        { (yyval.node) = createTextNode((yyvsp[0].node), NULL, NULL); }
+#line 1641 "html.tab.c"
+    break;
+
+  case 36: /* block: block_content_list  */
+#line 255 "html.y"
+                                                                        { (yyval.node) = createBlockContentListNode((yyvsp[0].node)); }
+#line 1647 "html.tab.c"
+    break;
+
+  case 37: /* block: %empty  */
+#line 256 "html.y"
+                                                                        { (yyval.node) = createTagSpecifier(NULL, NULL); }
+#line 1653 "html.tab.c"
+    break;
+
+  case 38: /* block_content_list: block_content  */
+#line 260 "html.y"
+                                                                        { (yyval.node) = createBlockContentNode((yyvsp[0].node)); }
+#line 1659 "html.tab.c"
+    break;
+
+  case 39: /* block_content_list: block_content_list block_content  */
+#line 261 "html.y"
+                                                                        { (yyval.node) = (yyvsp[-1].node); addLinkToList((yyval.node), (yyvsp[0].node)); }
+#line 1665 "html.tab.c"
+    break;
+
+  case 40: /* block_content: center_tag  */
+#line 265 "html.y"
+                                                                        { (yyval.node) = createCenterTagNode((yyvsp[0].node)); }
+#line 1671 "html.tab.c"
+    break;
+
+  case 41: /* block_content: form_tag  */
+#line 266 "html.y"
+                                                                        { (yyval.node) = createFormTagNode((yyvsp[0].node)); }
+#line 1677 "html.tab.c"
+    break;
+
+  case 42: /* block_content: ol_tag  */
+#line 267 "html.y"
+                                                                        { (yyval.node) = createOlTagNode((yyvsp[0].node)); }
+#line 1683 "html.tab.c"
+    break;
+
+  case 43: /* block_content: p_tag  */
+#line 268 "html.y"
+                                                                        { (yyval.node) = createPTagNode((yyvsp[0].node)); }
+#line 1689 "html.tab.c"
+    break;
+
+  case 44: /* block_content: table_tag  */
+#line 269 "html.y"
+                                                                        { (yyval.node) = createTableTagNode((yyvsp[0].node)); }
+#line 1695 "html.tab.c"
+    break;
+
+  case 45: /* block_content: ul_tag  */
+#line 270 "html.y"
+                                                                        { (yyval.node) = createUlTagNode((yyvsp[0].node)); }
+#line 1701 "html.tab.c"
+    break;
+
+
+#line 1705 "html.tab.c"
 
       default: break;
     }
@@ -1585,7 +1895,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 285 "html.y"
+#line 390 "html.y"
 
 
 int yyerror(char * s) 

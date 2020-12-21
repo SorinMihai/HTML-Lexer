@@ -1,7 +1,17 @@
-﻿  ast.c
-  html.tab.c
+﻿  html.tab.c
+html.y(177,103): warning C4013: 'createTagNode' undefined; assuming extern returning int
+html.y(177,162): warning C4047: '=': 'Node *' differs in levels of indirection from 'int'
+html.y(178,133): error C2143: syntax error: missing ';' before '}'
+html.y(188,110): warning C4013: 'createNoframeTagNode' undefined; assuming extern returning int
+html.y(188,127): warning C4047: '=': 'Node *' differs in levels of indirection from 'int'
+html.y(206,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(207,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(208,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(209,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(210,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(211,124): warning C4133: 'function': incompatible types - from 'char *' to 'Node *'
+html.y(240,123): warning C4047: 'function': 'const char *' differs in levels of indirection from 'int'
+html.y(240,118): warning C4024: 'createTagSpecifier': different types for formal and actual parameter 2
   lex.yy.c
-html.lex(80,13): error C2065: 'text': undeclared identifier
-lex.yy.c(1829,46): warning C4013: 'isatty' undefined; assuming extern returning int
-  LexerHTML.c
+lex.yy.c(1822,46): warning C4013: 'isatty' undefined; assuming extern returning int
   Generating Code...

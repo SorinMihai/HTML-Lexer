@@ -1,6 +1,6 @@
 
 %{
-    #include "symbols.h"
+    #include "html.tab.h"
 %}
 
 %%
